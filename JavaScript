@@ -1,0 +1,42 @@
+const display = document.getElementById("display");
+let timer =null;
+let startTime = 0;
+let elapsedTime =0;
+let isRun = false;
+
+function start(){
+    if(!isRun){
+        startTime = Date.now()-elapsedTime;
+        timer=setInterval(update,10);
+        isRun = true;
+    }
+}
+function stop(){
+    if(isRun){
+        clearInterval(timer);
+        elapsedTime = Date.now()-startTime;
+        isRun=false;
+    }
+}
+function restart(){
+    clearInterval(timer);
+    startTime = 0;
+    elapsedTime =0;
+   isRun = false;
+   display.textContent = "00:00:00:00";
+
+}
+function update(){
+    const currTime = Date.now();
+    elapsedTime = currTime-startTime;
+    let hours = Math.floor(elapsedTime/(1000*60*60));
+    let min = Math.floor(elapsedTime/(1000*60)%60);
+    let sec = Math.floor(elapsedTime/1000%60);
+    let millisec = Math.floor(elapsedTime%1000/10);
+
+    hours = String(hours).padStart(2,"0");
+    min = String(min).padStart(2,"0");
+    sec = String(sec).padStart(2,"0");
+    millisec = String(millisec).padStart(2,"0");
+    display.textContent = hours+":"+min+":"+sec+":"+millisec;
+}
